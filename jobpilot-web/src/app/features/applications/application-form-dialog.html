@@ -1,0 +1,181 @@
+<form class="dialog-panel max-w-2xl" [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <div class="mb-6 flex items-start gap-4">
+    <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-indigo-50 text-indigo-600">
+      <app-icon [name]="existing ? 'pencil' : 'briefcase'" [size]="20" />
+    </span>
+    <div class="flex-1">
+      <h2 class="text-lg font-semibold text-slate-900">
+        {{ existing ? 'Edit application' : 'Add application' }}
+      </h2>
+      <p class="text-sm text-slate-500">
+        {{
+          existing
+            ? existing.jobTitle + ' at ' + existing.companyName
+            : 'Track a job you want or have applied to.'
+        }}
+      </p>
+    </div>
+    <button type="button" class="icon-btn -mt-1 -mr-2" aria-label="Close" (click)="close()">
+      <app-icon name="x" [size]="18" />
+    </button>
+  </div>
+
+  @if (formError()) {
+    <p class="alert-error mb-5" role="alert">
+      <app-icon name="alert" [size]="16" class="mt-0.5" /> {{ formError() }}
+    </p>
+  }
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div>
+      <label class="label" for="companyName">Company *</label>
+      <input
+        id="companyName"
+        class="input"
+        formControlName="companyName"
+        placeholder="Acme Corp"
+        [class.input-invalid]="errorFor('companyName')"
+      />
+      @if (errorFor('companyName'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="jobTitle">Job title *</label>
+      <input
+        id="jobTitle"
+        class="input"
+        formControlName="jobTitle"
+        placeholder="Software Engineer"
+        [class.input-invalid]="errorFor('jobTitle')"
+      />
+      @if (errorFor('jobTitle'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="status">Status</label>
+      <select id="status" class="input" formControlName="status">
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+      @if (errorFor('status'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="location">Location</label>
+      <input
+        id="location"
+        class="input"
+        formControlName="location"
+        placeholder="Remote, Bengaluru…"
+        [class.input-invalid]="errorFor('location')"
+      />
+      @if (errorFor('location'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div class="sm:col-span-2">
+      <label class="label" for="jobUrl">Job posting link</label>
+      <input
+        id="jobUrl"
+        type="url"
+        class="input"
+        formControlName="jobUrl"
+        placeholder="https://…"
+        [class.input-invalid]="errorFor('jobUrl')"
+      />
+      @if (errorFor('jobUrl'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="appliedOn">Applied on</label>
+      <input
+        id="appliedOn"
+        type="date"
+        class="input"
+        formControlName="appliedOn"
+        [class.input-invalid]="errorFor('appliedOn')"
+      />
+      @if (errorFor('appliedOn'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="nextFollowUpOn">Follow up on</label>
+      <input
+        id="nextFollowUpOn"
+        type="date"
+        class="input"
+        formControlName="nextFollowUpOn"
+        [class.input-invalid]="errorFor('nextFollowUpOn')"
+      />
+      @if (errorFor('nextFollowUpOn'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div class="sm:col-span-2">
+      <label class="label" for="jobDescription">Job description</label>
+      <textarea
+        id="jobDescription"
+        rows="5"
+        class="input"
+        formControlName="jobDescription"
+        placeholder="Paste the job posting here. It's used for AI resume matching."
+        [class.input-invalid]="errorFor('jobDescription')"
+      ></textarea>
+      @if (errorFor('jobDescription'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+
+    <div class="sm:col-span-2">
+      <label class="label" for="notes">Notes</label>
+      <textarea
+        id="notes"
+        rows="3"
+        class="input"
+        formControlName="notes"
+        [class.input-invalid]="errorFor('notes')"
+      ></textarea>
+      @if (errorFor('notes'); as message) {
+        <p class="field-error">{{ message }}</p>
+      }
+    </div>
+  </div>
+
+  <div
+    class="-mx-6 mt-7 -mb-6 flex flex-wrap items-center gap-2 border-t border-slate-100 bg-slate-50/70 px-6 py-4 sm:-mx-7 sm:-mb-7 sm:px-7"
+  >
+    @if (existing) {
+      <button type="button" class="btn-ghost-danger px-3" [disabled]="saving()" (click)="remove()">
+        <app-icon name="trash" [size]="15" /> Delete
+      </button>
+      <button
+        type="button"
+        class="btn-secondary"
+        [disabled]="form.dirty"
+        [title]="form.dirty ? 'Save your changes before running a match' : ''"
+        (click)="openMatch()"
+      >
+        <app-icon name="sparkles" [size]="15" class="text-indigo-600" /> AI match
+      </button>
+    }
+    <div class="ml-auto flex gap-2">
+      <button type="button" class="btn-secondary" (click)="close()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="saving()">
+        {{ saving() ? 'Saving…' : existing ? 'Save changes' : 'Add application' }}
+      </button>
+    </div>
+  </div>
+</form>

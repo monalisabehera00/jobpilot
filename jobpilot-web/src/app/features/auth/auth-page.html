@@ -1,0 +1,207 @@
+<main class="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
+  <!-- Product pitch (large screens) -->
+  <section
+    class="relative hidden overflow-hidden bg-indigo-950 px-12 py-12 text-white lg:flex lg:flex-col xl:px-16"
+  >
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(40rem_25rem_at_10%_0%,rgb(99_102_241/0.45),transparent_60%),radial-gradient(35rem_25rem_at_100%_100%,rgb(168_85_247/0.35),transparent_60%)]"
+    ></div>
+    <div
+      class="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:32px_32px]"
+    ></div>
+
+    <div class="relative flex items-center gap-2.5 text-lg font-bold">
+      <span class="grid size-9 place-items-center rounded-xl bg-white/10 ring-1 ring-white/20">
+        <app-icon name="briefcase" [size]="18" />
+      </span>
+      JobPilot
+    </div>
+
+    <div class="relative my-auto max-w-lg py-12">
+      <p
+        class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-indigo-100 ring-1 ring-white/15"
+      >
+        <app-icon name="sparkles" [size]="14" /> Powered by Claude
+      </p>
+      <h2 class="mt-5 text-4xl leading-tight font-bold tracking-tight xl:text-5xl">
+        Your co-pilot for the
+        <span class="bg-linear-to-r from-indigo-200 to-fuchsia-200 bg-clip-text text-transparent"
+          >job search.</span
+        >
+      </h2>
+      <p class="mt-4 text-lg text-indigo-100/80">
+        Track every application, tailor your resume with AI, and follow up at the right time.
+      </p>
+
+      <ul class="mt-10 space-y-5">
+        @for (feature of features; track feature.title) {
+          <li class="flex gap-4">
+            <span
+              class="grid size-10 shrink-0 place-items-center rounded-xl bg-white/10 text-indigo-100 ring-1 ring-white/15"
+            >
+              <app-icon [name]="feature.icon" [size]="18" />
+            </span>
+            <div>
+              <p class="font-semibold">{{ feature.title }}</p>
+              <p class="text-sm text-indigo-100/70">{{ feature.text }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Decorative mini board -->
+    <div class="relative grid grid-cols-3 gap-3" aria-hidden="true">
+      @for (column of previewColumns; track column.label) {
+        <div class="rounded-xl bg-white/5 p-3 ring-1 ring-white/10">
+          <p class="mb-2 flex items-center gap-1.5 text-xs font-semibold text-indigo-100">
+            <span class="size-2 rounded-full {{ column.dot }}"></span>{{ column.label }}
+          </p>
+          @for (card of column.cards; track $index) {
+            <div class="mb-2 rounded-lg bg-white/10 p-2.5 last:mb-0">
+              <div class="h-2 w-3/4 rounded bg-white/40"></div>
+              <div class="mt-1.5 h-2 w-1/2 rounded bg-white/20"></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="flex items-center justify-center px-4 py-12 sm:px-8">
+    <div class="w-full max-w-sm">
+      <div class="mb-8 flex items-center gap-2.5 text-lg font-bold lg:hidden">
+        <span class="grid size-9 place-items-center rounded-xl bg-indigo-600 text-white">
+          <app-icon name="briefcase" [size]="18" />
+        </span>
+        JobPilot
+      </div>
+
+      <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">
+        {{ isRegister ? 'Create your account' : 'Welcome back' }}
+      </h1>
+      <p class="mt-2 text-sm text-slate-500">
+        {{
+          isRegister
+            ? 'Start tracking your job search in seconds.'
+            : 'Log in to continue your job search.'
+        }}
+      </p>
+
+      <form class="mt-8 space-y-5" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        @if (sessionExpired && !isRegister) {
+          <p class="alert-warning">
+            <app-icon name="clock" [size]="16" class="mt-0.5" /> Your session expired. Please log in
+            again.
+          </p>
+        }
+        @if (error()) {
+          <p class="alert-error" role="alert">
+            <app-icon name="alert" [size]="16" class="mt-0.5" /> {{ error() }}
+          </p>
+        }
+
+        @if (isRegister) {
+          <div>
+            <label class="label" for="name">Full name</label>
+            <div class="relative">
+              <app-icon
+                name="user"
+                [size]="16"
+                class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-slate-400"
+              />
+              <input
+                id="name"
+                class="input pl-10"
+                formControlName="name"
+                autocomplete="name"
+                placeholder="Jane Doe"
+                [class.input-invalid]="showError('name')"
+              />
+            </div>
+            @if (showError('name')) {
+              <p class="field-error">Enter your name.</p>
+            }
+          </div>
+        }
+
+        <div>
+          <label class="label" for="email">Email</label>
+          <div class="relative">
+            <app-icon
+              name="mail"
+              [size]="16"
+              class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-slate-400"
+            />
+            <input
+              id="email"
+              type="email"
+              class="input pl-10"
+              formControlName="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              [class.input-invalid]="showError('email')"
+            />
+          </div>
+          @if (showError('email')) {
+            <p class="field-error">Enter a valid email address.</p>
+          }
+        </div>
+
+        <div>
+          <label class="label" for="password">Password</label>
+          <div class="relative">
+            <app-icon
+              name="lock"
+              [size]="16"
+              class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-slate-400"
+            />
+            <input
+              id="password"
+              class="input px-10"
+              formControlName="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              [attr.autocomplete]="isRegister ? 'new-password' : 'current-password'"
+              [placeholder]="isRegister ? 'At least 8 characters' : 'Your password'"
+              [class.input-invalid]="showError('password')"
+            />
+            <button
+              type="button"
+              class="absolute top-1/2 right-2 grid size-8 -translate-y-1/2 place-items-center rounded-lg text-slate-400 hover:text-slate-600"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showPassword()"
+              (click)="showPassword.set(!showPassword())"
+            >
+              <app-icon [name]="showPassword() ? 'eyeOff' : 'eye'" [size]="16" />
+            </button>
+          </div>
+          @if (showError('password')) {
+            <p class="field-error">
+              {{ isRegister ? 'Use at least 8 characters.' : 'Enter your password.' }}
+            </p>
+          }
+        </div>
+
+        <button type="submit" class="btn-primary w-full py-3" [disabled]="submitting()">
+          @if (submitting()) {
+            <span
+              class="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+            ></span>
+            Please wait…
+          } @else {
+            {{ isRegister ? 'Create account' : 'Log in' }}
+          }
+        </button>
+      </form>
+
+      <p class="mt-8 text-center text-sm text-slate-500">
+        @if (isRegister) {
+          Already have an account? <a routerLink="/login" class="link">Log in</a>
+        } @else {
+          New to JobPilot? <a routerLink="/register" class="link">Create an account</a>
+        }
+      </p>
+    </div>
+  </section>
+</main>
