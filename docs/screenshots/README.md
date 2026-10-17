@@ -1,12 +1,11 @@
 # Screenshots
 
-Save screenshots here with these names so the main README picks them up:
+Images used by the main README:
 
-| File | What to capture |
+| File | What it shows |
 |---|---|
-| `board.png` | The Kanban board with a few cards in different columns |
+| `board.png` | The Kanban board |
 | `applications.png` | The Applications list with filters and pagination |
 | `ai-match.png` | The AI resume match dialog showing a result |
-| `resumes.png` | The Resumes page with at least one uploaded resume |
-| `swagger.png` | Swagger UI at http://localhost:5000/api/docs |
-| `login.png` | The login page |
+| `resumes.png` | The Resumes page with an uploaded resume |
+| `add-application.png` | The Add application form |

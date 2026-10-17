@@ -25,17 +25,15 @@
 
 | Kanban board | Application list |
 |---|---|
-| 📸 _Screenshot placeholder — add `docs/screenshots/board.png`_ <!-- ![Kanban board](docs/screenshots/board.png) --> | 📸 _Screenshot placeholder — add `docs/screenshots/applications.png`_ <!-- ![Application list](docs/screenshots/applications.png) --> |
+| ![Kanban board](docs/screenshots/board.png) | ![Application list](docs/screenshots/applications.png) |
 
 | AI resume match | Resumes |
 |---|---|
-| 📸 _Screenshot placeholder — add `docs/screenshots/ai-match.png`_ <!-- ![AI match](docs/screenshots/ai-match.png) --> | 📸 _Screenshot placeholder — add `docs/screenshots/resumes.png`_ <!-- ![Resumes](docs/screenshots/resumes.png) --> |
+| ![AI resume match](docs/screenshots/ai-match.png) | ![Resumes](docs/screenshots/resumes.png) |
 
-| API docs (Swagger) | Login |
-|---|---|
-| 📸 _Screenshot placeholder — add `docs/screenshots/swagger.png`_ <!-- ![Swagger UI](docs/screenshots/swagger.png) --> | 📸 _Screenshot placeholder — add `docs/screenshots/login.png`_ <!-- ![Login](docs/screenshots/login.png) --> |
-
-> To add a screenshot: save the image in `docs/screenshots/`, delete the placeholder text and remove the `<!-- -->` around the image link.
+| Add application |
+|---|
+| <img src="docs/screenshots/add-application.png" alt="Add application form" width="600"> |
 
 ## Tech stack
 
